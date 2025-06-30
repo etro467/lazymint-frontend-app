@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+}
+
+@layer base {
+  :root {
+    --background: 145 25% 97%;
+    --foreground: 145 25% 9%;
+    --card: 145 25% 99%;
+    --card-foreground: 145 25% 15%;
+    --popover: 145 25% 99%;
+    --popover-foreground: 145 25% 9%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 145 25% 97%;
+    --secondary: 145 15% 92%;
+    --secondary-foreground: 145 25% 9%;
+    --muted: 145 15% 94%;
+    --muted-foreground: 145 10% 45%;
+    --accent: 142 45% 85%;
+    --accent-foreground: 145 25% 9%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 145 25% 97%;
+    --border: 145 20% 88%;
+    --input: 145 20% 88%;
+    --ring: 142 76% 36%;
+    --chart-1: 142 76% 36%;
+    --chart-2: 158 64% 52%;
+    --chart-3: 120 49% 60%;
+    --chart-4: 164 86% 40%;
+    --chart-5: 136 62% 55%;
+    --radius: 0.75rem;
+  }
+  
+  .dark {
+    --background: 145 25% 6%;
+    --foreground: 145 15% 92%;
+    --card: 145 25% 8%;
+    --card-foreground: 145 15% 92%;
+    --popover: 145 25% 8%;
+    --popover-foreground: 145 15% 92%;
+    --primary: 142 76% 46%;
+    --primary-foreground: 145 25% 6%;
+    --secondary: 145 25% 12%;
+    --secondary-foreground: 145 15% 92%;
+    --muted: 145 25% 12%;
+    --muted-foreground: 145 10% 55%;
+    --accent: 145 25% 12%;
+    --accent-foreground: 145 15% 92%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 145 15% 92%;
+    --border: 145 25% 18%;
+    --input: 145 25% 18%;
+    --ring: 142 76% 46%;
+    --chart-1: 142 76% 46%;
+    --chart-2: 158 64% 62%;
+    --chart-3: 120 49% 70%;
+    --chart-4: 164 86% 50%;
+    --chart-5: 136 62% 65%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-medium;
+    overflow-x: hidden;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+  
+  .gradient-mint {
+    @apply bg-gradient-to-br from-mint-400 via-mint-500 to-mint-600;
+  }
+  
+  .text-gradient {
+    @apply bg-gradient-to-r from-mint-600 to-mint-800 bg-clip-text text-transparent;
+  }
+  
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-mint-200/25 hover:-translate-y-1;
+  }
+  
+  .btn-mint {
+    @apply bg-gradient-to-r from-mint-500 to-mint-600 hover:from-mint-600 hover:to-mint-700 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl;
+  }
+}
+
+@layer components {
+  .container {
+    @apply mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .section-padding {
+    @apply py-12 sm:py-16 lg:py-20;
+  }
+  
+  .animate-on-scroll {
+    @apply opacity-0 translate-y-8 transition-all duration-700;
+  }
+  
+  .animate-on-scroll.in-view {
+    @apply opacity-100 translate-y-0;
+  }
+}
