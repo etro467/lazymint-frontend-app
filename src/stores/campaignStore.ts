@@ -85,11 +85,13 @@ export const useCampaignStore = create<CampaignState>((set, get) => ({
       const newCampaignId = (result.data as any).campaignId;
       
       // Fetch the newly created campaign to get all its fields including server timestamps
-      const newCampaignDoc = await getDocs(query(collection(db, "campaigns"), where("__name__", "==", newCampaignId)));
-      if (newCampaignDoc.empty) {
+      const newCampaignRef = doc(db, "campaigns", newCampaignId);
+      const newCampaignSnap = await getDoc(newCampaignRef);
+      
+      if (!newCampaignSnap.exists()) {
         throw new Error("Newly created campaign not found.");
       }
-      const newCampaign = { id: newCampaignId, ...newCampaignDoc.docs[0].data() } as Campaign;
+      const newCampaign = { id: newCampaignSnap.id, ...newCampaignSnap.data() } as Campaign;
 
       set((state) => ({
         campaigns: [newCampaign, ...state.campaigns],

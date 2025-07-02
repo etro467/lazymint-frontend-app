@@ -36,17 +36,6 @@ export function Footer() {
               Empowering creators to securely engage fans and distribute unique digital content without crypto complexities.
             </p>
             
-            {/* Built on Bolt Badge */}
-            <div className="pt-4">
-              <a
-                href="https://bolt.new"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-3 py-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-medium hover:shadow-lg transition-all duration-200"
-              >
-                <Zap className="h-3 w-3 mr-1.5" />
-                Built on Bolt
-              </a>
             </div>
           </div>
 

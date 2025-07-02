@@ -1,41 +1,105 @@
 import { create } from 'zustand';
-import { revenueCatService, SubscriptionTier, SUBSCRIPTION_TIERS, PurchasePackage } from '@/config/revenuecat';
+import { getStripe } from '@/config/stripe';
+import { httpsCallable } from 'firebase/functions';
+import { functions } from '@/config/firebase';
+
+interface SubscriptionTier {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  priceValue: number;
+  features: string[];
+  popular?: boolean;
+  entitlements: string[];
+}
+
+export const SUBSCRIPTION_TIERS: SubscriptionTier[] = [
+  {
+    id: 'free',
+    name: 'Free',
+    description: 'Perfect for getting started',
+    price: '$0',
+    priceValue: 0,
+    features: [
+      '1 Active Campaign',
+      'Basic Analytics',
+      '100 Claims per month',
+      'Standard Support'
+    ],
+    entitlements: []
+  },
+  {
+    id: 'basic',
+    name: 'Basic',
+    description: 'Great for growing creators',
+    price: '$9.99',
+    priceValue: 9.99,
+    features: [
+      '5 Active Campaigns',
+      'Advanced Analytics',
+      '1,000 Claims per month',
+      'AI Content Generation',
+      'Priority Support'
+    ],
+    popular: true,
+    entitlements: ['basic_features', 'ai_generation']
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    description: 'For professional creators',
+    price: '$29.99',
+    priceValue: 29.99,
+    features: [
+      'Unlimited Campaigns',
+      'Advanced Analytics & Insights',
+      'Unlimited Claims',
+      'AI Content Generation',
+      'Artistic QR Codes',
+      'Algorand Blockchain Logging',
+      'CSV Export',
+      'Premium Support'
+    ],
+    entitlements: ['basic_features', 'ai_generation', 'blockchain_logging', 'unlimited_campaigns']
+  }
+];
 
 interface SubscriptionState {
   currentTier: SubscriptionTier;
-  customerInfo: any;
   loading: boolean;
   error: string | null;
-  packages: PurchasePackage[];
-  
+  stripeClient: Stripe | null;
+  products: any[]; // Define a proper type for products later
+
   // Actions
   initializeSubscription: () => Promise<void>;
-  refreshCustomerInfo: () => Promise<void>;
-  purchasePackage: (packageToPurchase: PurchasePackage) => Promise<void>;
-  restorePurchases: () => Promise<void>;
+  refreshSubscriptionStatus: () => Promise<void>;
+  purchaseProduct: (priceId: string) => Promise<void>;
   hasFeature: (feature: string) => boolean;
   clearError: () => void;
 }
 
 export const useSubscriptionStore = create<SubscriptionState>((set, get) => ({
   currentTier: SUBSCRIPTION_TIERS[0], // Start with free tier
-  customerInfo: null,
   loading: false,
   error: null,
-  packages: [],
+  stripeClient: null,
+  products: [],
 
   initializeSubscription: async () => {
     set({ loading: true, error: null });
     try {
-      await revenueCatService.initialize();
-      const customerInfo = await revenueCatService.getCustomerInfo();
-      const offerings = await revenueCatService.getOfferings();
-      const currentTier = revenueCatService.getUserTier(customerInfo);
-      
+      const stripe = await getStripe();
+      set({ stripeClient: stripe });
+
+      // Fetch products/prices from your Firebase backend
+      const getProductsCallable = httpsCallable(functions, 'getStripeProducts');
+      const result = await getProductsCallable();
+      const products = result.data as any[]; // Assuming your function returns an array of products/prices
+
       set({
-        customerInfo,
-        currentTier,
-        packages: offerings.current?.availablePackages || [],
+        products,
         loading: false
       });
     } catch (error: any) {
@@ -43,14 +107,16 @@ export const useSubscriptionStore = create<SubscriptionState>((set, get) => ({
     }
   },
 
-  refreshCustomerInfo: async () => {
+  refreshSubscriptionStatus: async () => {
     set({ loading: true });
     try {
-      const customerInfo = await revenueCatService.getCustomerInfo();
-      const currentTier = revenueCatService.getUserTier(customerInfo);
+      // In a real Stripe integration, you'd likely fetch the user's subscription status
+      // from your backend (e.g., a Firebase Cloud Function that queries Stripe).
+      // For now, we'll assume the user is on the free tier unless a purchase is made.
+      // You'll need to implement the logic to determine the actual current tier based on Stripe data.
+      const currentTier = SUBSCRIPTION_TIERS[0]; // Placeholder: Implement actual logic to determine tier
       
       set({
-        customerInfo,
         currentTier,
         loading: false
       });
@@ -59,34 +125,33 @@ export const useSubscriptionStore = create<SubscriptionState>((set, get) => ({
     }
   },
 
-  purchasePackage: async (packageToPurchase: PurchasePackage) => {
+  purchaseProduct: async (priceId: string) => {
     set({ loading: true, error: null });
     try {
-      const result = await revenueCatService.purchasePackage(packageToPurchase);
-      const currentTier = revenueCatService.getUserTier(result.customerInfo);
-      
-      set({
-        customerInfo: result.customerInfo,
-        currentTier,
-        loading: false
-      });
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-      throw error;
-    }
-  },
+      const { stripeClient } = get();
+      if (!stripeClient) {
+        throw new Error("Stripe.js not loaded.");
+      }
 
-  restorePurchases: async () => {
-    set({ loading: true, error: null });
-    try {
-      const customerInfo = await revenueCatService.restorePurchases();
-      const currentTier = revenueCatService.getUserTier(customerInfo);
-      
-      set({
-        customerInfo,
-        currentTier,
-        loading: false
-      });
+      // Call your Firebase Cloud Function to create a Stripe Checkout Session
+      const createCheckoutSessionCallable = httpsCallable(functions, 'createStripeCheckoutSession');
+      const result = await createCheckoutSessionCallable({ priceId });
+      const sessionId = (result.data as any).id;
+
+      if (!sessionId) {
+        throw new Error("Failed to create checkout session.");
+      }
+
+      const { error } = await stripeClient.redirectToCheckout({ sessionId });
+
+      if (error) {
+        throw new Error(error.message || "Stripe checkout failed.");
+      }
+
+      // After successful checkout, refresh subscription status
+      await get().refreshSubscriptionStatus();
+
+      set({ loading: false });
     } catch (error: any) {
       set({ error: error.message, loading: false });
       throw error;
@@ -94,15 +159,8 @@ export const useSubscriptionStore = create<SubscriptionState>((set, get) => ({
   },
 
   hasFeature: (feature: string) => {
-    const { currentTier, customerInfo } = get();
-    
-    // Check by tier entitlements
-    if (currentTier.entitlements.includes(feature)) {
-      return true;
-    }
-    
-    // Check by RevenueCat entitlements
-    return revenueCatService.hasEntitlement(customerInfo, feature);
+    const { currentTier } = get();
+    return currentTier.entitlements.includes(feature);
   },
 
   clearError: () => set({ error: null }),

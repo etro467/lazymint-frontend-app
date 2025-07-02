@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { useSubscriptionStore } from '@/stores/subscriptionStore';
 import { useAuthStore } from '@/stores/authStore';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { SUBSCRIPTION_TIERS } from '@/config/revenuecat';
+
 import { Check, Crown, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -15,10 +15,10 @@ export function PricingPage() {
   const { isAuthenticated } = useAuthStore();
   const { 
     currentTier, 
-    packages, 
     loading, 
-    purchasePackage, 
-    initializeSubscription 
+    purchaseProduct, 
+    initializeSubscription, 
+    products
   } = useSubscriptionStore();
 
   useEffect(() => {
@@ -32,18 +32,20 @@ export function PricingPage() {
     }
 
     if (tier.id === 'free') {
-      return;
+      return; // Free tier doesn't require a purchase
     }
 
     try {
-      const packageToPurchase = packages.find(pkg => pkg.identifier === tier.id);
-      if (!packageToPurchase) {
-        toast.error('Package not available. Please try again.');
+      // Find the corresponding Stripe priceId for the selected tier
+      const product = products.find(p => p.name === tier.name); // Assuming product name matches tier name
+      if (!product || !product.default_price) {
+        toast.error('Product not available. Please try again.');
         return;
       }
+      const priceId = product.default_price;
 
-      await purchasePackage(packageToPurchase);
-      toast.success(`Successfully upgraded to ${tier.name}!`);
+      await purchaseProduct(priceId);
+      toast.success(`Successfully initiated upgrade to ${tier.name}! Please complete the checkout.`);
     } catch (error: any) {
       toast.error(error.message || 'Purchase failed. Please try again.');
     }
