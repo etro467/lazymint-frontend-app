@@ -57,22 +57,22 @@ export function PricingPage() {
     <div className="min-h-screen bg-gradient-to-b from-mint-50/50 to-background">
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-3">
             Choose Your <span className="text-gradient">Plan</span>
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto">
             Start free and scale as you grow. All plans include our core features 
             with advanced tools available on higher tiers.
           </p>
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {SUBSCRIPTION_TIERS.map((tier) => (
             <Card 
               key={tier.id} 
-              className={`relative card-hover ${
+              className={`relative ${
                 tier.popular 
                   ? 'border-mint-500 shadow-lg shadow-mint-200/25' 
                   : ''
@@ -87,27 +87,27 @@ export function PricingPage() {
                 </div>
               )}
 
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl">{tier.name}</CardTitle>
-                <CardDescription className="text-base">{tier.description}</CardDescription>
+              <CardHeader className="text-center pb-4">
+                <CardTitle className="text-xl">{tier.name}</CardTitle>
+                <CardDescription className="text-sm">{tier.description}</CardDescription>
                 
-                <div className="py-4">
-                  <div className="text-4xl font-bold">
+                <div className="py-3">
+                  <div className="text-3xl font-bold">
                     {tier.price}
                     {tier.priceValue > 0 && (
-                      <span className="text-lg font-normal text-muted-foreground">/month</span>
+                      <span className="text-base font-normal text-muted-foreground">/month</span>
                     )}
                   </div>
                 </div>
               </CardHeader>
 
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-5">
                 {/* Features */}
-                <ul className="space-y-3">
+                <ul className="space-y-2">
                   {tier.features.map((feature, index) => (
-                    <li key={index} className="flex items-start space-x-3">
-                      <Check className="h-5 w-5 text-mint-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-sm">{feature}</span>
+                    <li key={index} className="flex items-start space-x-2">
+                      <Check className="h-4 w-4 text-mint-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-xs">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -146,38 +146,38 @@ export function PricingPage() {
         </div>
 
         {/* FAQ Section */}
-        <div className="mt-20 max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
+        <div className="mt-16 max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-10">
             Frequently Asked Questions
           </h2>
           
-          <div className="space-y-8">
+          <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold mb-2">Can I change plans anytime?</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-base font-semibold mb-1">Can I change plans anytime?</h3>
+              <p className="text-sm text-muted-foreground">
                 Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately 
                 and you'll be charged or credited prorated amounts.
               </p>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold mb-2">What happens if I exceed my plan limits?</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-base font-semibold mb-1">What happens if I exceed my plan limits?</h3>
+              <p className="text-sm text-muted-foreground">
                 We'll notify you when you're approaching your limits. You can either upgrade your plan 
                 or wait until the next billing cycle when your limits reset.
               </p>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold mb-2">Is there a setup fee?</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-base font-semibold mb-1">Is there a setup fee?</h3>
+              <p className="text-sm text-muted-foreground">
                 No setup fees! All plans include everything you need to get started immediately.
               </p>
             </div>
             
             <div>
-              <h3 className="text-lg font-semibold mb-2">Can I cancel my subscription?</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-base font-semibold mb-1">Can I cancel my subscription?</h3>
+              <p className="text-sm text-muted-foreground">
                 Yes, you can cancel anytime from your account settings. You'll continue to have access 
                 to paid features until the end of your current billing period.
               </p>
@@ -186,11 +186,11 @@ export function PricingPage() {
         </div>
 
         {/* CTA Section */}
-        <div className="mt-20 text-center">
+        <div className="mt-16 text-center">
           <Card className="bg-gradient-to-r from-mint-500 to-mint-600 text-white max-w-2xl mx-auto">
             <CardContent className="p-8">
-              <h3 className="text-2xl font-bold mb-4">Ready to get started?</h3>
-              <p className="text-mint-100 mb-6">
+              <h3 className="text-2xl font-bold mb-3">Ready to get started?</h3>
+              <p className="text-mint-100 mb-5">
                 Join thousands of creators who trust LazyMint for their digital content distribution.
               </p>
               <Button 

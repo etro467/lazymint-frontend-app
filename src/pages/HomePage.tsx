@@ -65,11 +65,11 @@ export function HomePage() {
       <section className="section-padding bg-gradient-to-b from-mint-50/50 to-background">
         <div className="container text-center space-y-8">
           <div className="animate-fade-in">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
               Empower Your{' '}
               <span className="text-gradient">Digital Creativity</span>
             </h1>
-            <p className="text-xl text-muted-foreground mt-6 max-w-3xl mx-auto">
+            <p className="text-lg text-muted-foreground mt-6 max-w-2xl mx-auto">
               LazyMint enables creators to securely engage fans and distribute unique digital content 
               without crypto complexities, featuring lazy minting of verifiable campaign data to Algorand.
             </p>
@@ -97,10 +97,10 @@ export function HomePage() {
             )}
             
             <Button 
-              size="lg" 
-              variant="outline" 
-              onClick={() => navigate('/demo')}
-              className="text-lg px-8 py-6 border-mint-200 hover:bg-mint-50"
+                size="lg" 
+                variant="outline" 
+                onClick={() => navigate('/demo')}
+                className="text-lg px-8 py-6"
             >
               Try Demo
             </Button>
@@ -110,7 +110,7 @@ export function HomePage() {
             <img
               src="https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg"
               alt="Digital content creation"
-              className="mx-auto rounded-lg shadow-2xl max-w-4xl w-full card-hover"
+              className="mx-auto rounded-lg max-w-3xl w-full"
             />
           </div>
         </div>
@@ -119,24 +119,24 @@ export function HomePage() {
       {/* Features Section */}
       <section id="features" className="section-padding">
         <div className="container">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
               Everything You Need to Succeed
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-xl mx-auto">
               Powerful tools and features designed to help creators build, engage, and monetize their digital presence.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {features.map((feature, index) => (
-              <Card key={index} className="card-hover">
+              <Card key={index}>
                 <CardHeader>
-                  <feature.icon className="h-12 w-12 text-mint-500 mb-4" />
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
+                  <feature.icon className="h-10 w-10 text-mint-500 mb-3" />
+                  <CardTitle className="text-lg">{feature.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-base">
+                  <CardDescription className="text-sm">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
@@ -151,19 +151,19 @@ export function HomePage() {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl font-bold mb-5">
                 Why Choose LazyMint?
               </h2>
-              <p className="text-lg text-muted-foreground mb-8">
+              <p className="text-base text-muted-foreground mb-6">
                 Built for creators who want to focus on their art, not the technology. 
                 Our platform handles the complexity so you can concentrate on what matters most.
               </p>
               
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <CheckCircle className="h-6 w-6 text-mint-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-base">{benefit}</span>
+                  <div key={index} className="flex items-start space-x-2">
+                    <CheckCircle className="h-5 w-5 text-mint-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{benefit}</span>
                   </div>
                 ))}
               </div>
@@ -184,9 +184,9 @@ export function HomePage() {
               <img
                 src="https://images.pexels.com/photos/3861458/pexels-photo-3861458.jpeg"
                 alt="Creator workspace"
-                className="rounded-lg shadow-xl w-full"
+                className="rounded-lg w-full"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-mint-500/20 to-transparent rounded-lg"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-mint-500/10 to-transparent rounded-lg"></div>
             </div>
           </div>
         </div>
@@ -196,18 +196,17 @@ export function HomePage() {
       <section className="section-padding">
         <div className="container">
           <Card className="bg-gradient-to-r from-mint-500 to-mint-600 text-white">
-            <CardContent className="p-12 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <CardContent className="p-10 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3">
                 Ready to Get Started?
               </h2>
-              <p className="text-xl mb-8 text-mint-100">
+              <p className="text-lg mb-6 text-mint-100">
                 Join thousands of creators who trust LazyMint for their digital content distribution.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Button 
                   size="lg" 
-                  variant="secondary"
                   onClick={() => navigate('/register')}
                   className="text-lg px-8 py-6"
                 >
