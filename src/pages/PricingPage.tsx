@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useSubscriptionStore } from '@/stores/subscriptionStore';
+import { useSubscriptionStore, SUBSCRIPTION_TIERS } from '@/stores/subscriptionStore';
 import { useAuthStore } from '@/stores/authStore';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 

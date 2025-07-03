@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { httpsCallable } from 'firebase/functions';
-import { collection, query, where, getDocs, doc, updateDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, updateDoc, deleteDoc, serverTimestamp, getDoc } from 'firebase/firestore';
 import { db, functions } from '@/config/firebase';
 import { useAuthStore } from './authStore';
 

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { getStripe } from '@/config/stripe';
+import { Stripe } from '@stripe/stripe-js';
 import { httpsCallable } from 'firebase/functions';
 import { functions } from '@/config/firebase';
 
